@@ -28,7 +28,7 @@ jobs:
         IP_FILE: 'listproxy.txt'
         API_URL: 'https://proxyip-check.vercel.app/{ip}:{port}'
       run: |
-        python update_proxy_status.py
+        python update_proxy_status1.py
 
     - name: Commit and push changes
       run: |
