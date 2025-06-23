@@ -94,7 +94,7 @@ def generate_grouped_json_by_cc_only(proxy_data, output_file='alive_proxies_grou
 
 def main():
     input_file = os.getenv('IP_FILE', 'listproxy.txt')
-    output_file = 'listproxy.txt.tmp'
+    output_file = 'listproxy.txt'
     error_file = 'error.txt'
     api_url_template = os.getenv('API_URL', 'https://proxyip-check.vercel.app/{ip}:{port}')
 
