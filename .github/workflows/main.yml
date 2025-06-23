@@ -1,0 +1,45 @@
+name: Update Proxy IP Status1
+
+on:
+  schedule:
+    - cron: '0 0 */7 * *'  # Pengecekan setiap 7 hari sekali
+  workflow_dispatch:
+
+jobs:
+  update-proxies:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+
+    - name: Update proxy status
+      env:
+        IP_FILE: 'listproxy.txt'
+        API_URL: 'https://proxyip-check.vercel.app/{ip}:{port}'
+      run: |
+        python update_proxy_status.py
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git add listproxy.txt
+        git add error.txt
+        git add alive_proxies_grouped.json
+        if git diff --cached --exit-code; then
+          echo "No changes to commit"
+        else
+          git commit -m "Update proxy IP status and JSON grouping"
+          git push
+        fi
